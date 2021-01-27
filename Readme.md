@@ -19,17 +19,17 @@ data to check if the data is semantically correct instead of manually counting
 
 	Example Use:
 
-			import BitFieldFactory
+			import BitFieldFactory as bff
 			simple_ruleset = ('class_name', [
-				BitFieldFactory.Segment('first_6_bits', 0, 6),
-				BitFieldFactory.Segment('first_6_bits_again', 0, 6),
-				BitFieldFactory.Segment('cross_byte_boundary', 6, 6),
-				BitFieldFactory.Segment('long_first_byte', 16, 8),
-				BitFieldFactory.Segment('long', 16, 32)
+				bff.Segment('first_6_bits', 0, 6),
+				bff.Segment('first_6_bits_again', 0, 6),
+				bff.Segment('cross_byte_boundary', 6, 6),
+				bff.Segment('long_first_byte', 16, 8),
+				bff.Segment('long', 16, 32)
 				]
 			)
-			alias = BitFieldFactory.BitFieldFactory(*simple_ruleset)
-			class_instance = BitFieldFactory.class_name()
+			alias = bff.new_class(*simple_ruleset)
+			class_instance = bff.BitFieldFactory.class_name()
 			# OR
 			class_instance = alias()
 			# OR if you want actual data in the slots:
@@ -92,35 +92,53 @@ data to check if the data is semantically correct instead of manually counting
 		>>> class_instance.print_bytes(bytes_per_line=10)
 		00000000 00000000 00000000 00000000 00000000 00000000 
 
-		# display is 'decimal' by default
-		>>> print(class_instance.format_details(display='decimal')
+		# display_format is 'decimal' by default
+		>>> print(class_instance.format_details())
 		== BitField Details ==
-			cross_byte_boundary            : 0
-			cross_byte_boundary_as_bits    : 000000
-			first_6_bits                   : 0
-			first_6_bits_again             : 0
-			first_6_bits_again_as_bits     : 000000
-			first_6_bits_as_bits           : 000000
-			long                           : 0
-			long_as_bits                   : 00000000000000000000000000000000
-			long_first_byte                : 0
-			long_first_byte_as_bits        : 00000000
+			first_6_bits               : 0
+			first_6_bits_as_bits       : 000000
+			first_6_bits_again         : 0
+			first_6_bits_again_as_bits : 000000
+			cross_byte_boundary        : 0
+			cross_byte_boundary_as_bits: 000000
+			long_first_byte            : 0
+			long_first_byte_as_bits    : 00000000
+			long                       : 0
+			long_as_bits               : 00000000000000000000000000000000
 
-		# It is also important to note that the "_as_bits" representations in format_details will be influenced by the instance's _group_size and _group_separator
+		# It is also important to note that the "_as_bits" representations in
+		# format_details will be influenced by the instance's _group_size and _group_separator
 		>>> class_instance._group_separator = '_'
 		>>> class_instance._group_size = 8
-		>>> print(class_instance.format_details(display='hex'))
+		>>> print(class_instance.format_details(data_display='hex'))
 		== BitField Details ==
-			cross_byte_boundary            : 0x0
-			cross_byte_boundary_as_bits    : 000000
-			first_6_bits                   : 0x0
-			first_6_bits_again             : 0x0
-			first_6_bits_again_as_bits     : 000000
-			first_6_bits_as_bits           : 000000
-			long                           : 0x0
-			long_as_bits                   : 00000000_00000000_00000000_00000000
-			long_first_byte                : 0x0
-			long_first_byte_as_bits        : 00000000
+			first_6_bits               : 0x0
+			first_6_bits_as_bits       : 000000
+			first_6_bits_again         : 0x0
+			first_6_bits_again_as_bits : 000000
+			cross_byte_boundary        : 0x0
+			cross_byte_boundary_as_bits: 000000
+			long_first_byte            : 0x0
+			long_first_byte_as_bits    : 00000000
+			long                       : 0x0
+			long_as_bits               : 00000000_00000000_00000000_00000000
 
-	The list of details is merely sorted alphabetically.
+	The list of details can be sorted alphabetically (ASCII order, so caps
+	first) or in the order they were specified in the ruleset with the
+	display_order parameter
+
+		>>> print(class_instance.format_details(display_format='hex', display_order='alphabetic'))
+		== BitField Details ==
+			cross_byte_boundary        : 0x0
+			cross_byte_boundary_as_bits: 000000
+			first_6_bits               : 0x0
+			first_6_bits_again         : 0x0
+			first_6_bits_again_as_bits : 000000
+			first_6_bits_as_bits       : 000000
+			long                       : 0x0
+			long_as_bits               : 00000000_00000000_00000000_00000000
+			long_first_byte            : 0x0
+			long_first_byte_as_bits    : 00000000
+
+
 
