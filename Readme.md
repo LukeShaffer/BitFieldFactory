@@ -28,10 +28,13 @@ data to check if the data is semantically correct instead of manually counting
 				BitFieldFactory.Segment('long', 16, 32)
 				]
 			)
-			alias = BitFieldFactory.BitFieldFactory(simple_ruleset)
+			alias = BitFieldFactory.BitFieldFactory(*simple_ruleset)
 			class_instance = BitFieldFactory.class_name()
 			# OR
 			class_instance = alias()
+			# OR if you want actual data in the slots:
+			instance = alias(b'\xa0' * 6)
+			# Substitute binary data you have read from a .dat for instance
 
 	And then BOOM, you have a 6-byte structure that you can easily index the first 6 bits (two different ways), next 6 bits, the 3rd byte, and final 4 bytes (which starts at the third byte) of that structure.  I go over that in the next section.
 
