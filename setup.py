@@ -9,7 +9,7 @@ setuptools.setup(
     author='Luke Shaffer',
     author_email='Luke.Shaffer@asu.edu',
     description='A Python library to allow users to easily create, view, and edit BitFields '
-        '(such as binary data headers) with ease and simplicity',
+        '(such as binary data headers) with ease and simplicity, written in pure Python.',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://genovesa.sese.asu.edu/LukeShaffer/bitfieldfactory",
