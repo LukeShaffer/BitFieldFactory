@@ -16,9 +16,9 @@ cross_byte_rules = ('test_name', [
 # The "proof of concept" run to create dynamic classes
 def test_class_factory():
 
-	# 'test_class' is now an alias for bff.BitField.test_name
+	# 'test_class' is now an alias for bff.BitFieldFactory.test_name
 	test_class = bff.new_class(*cross_byte_rules)
-	assert test_class == bff.BitField.test_name
+	assert test_class == bff.BitFieldFactory.test_name
 
 	test_inst = test_class()
 	assert test_inst.bytes == bytearray(b'\x00' * 6)
@@ -28,7 +28,7 @@ def test_class_factory():
 
 	assert isinstance(test_inst, test_class)
 
-	assert isinstance(test_inst, bff.BitField.test_name)
+	assert isinstance(test_inst, bff.BitFieldFactory.test_name)
 
 	
 

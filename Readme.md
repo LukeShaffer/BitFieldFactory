@@ -13,7 +13,7 @@ data to check if the data is semantically correct instead of manually counting
 
 	* **As a general rule in this library, the field names are just aliases for the bit positions they represent in the structure. So if you have multiple fields pointing to the same bits, updating the bits from one field will update them for all fields.**
 
-	* **The only stipulation is that currently, all structures created must be a multiple of whole bytes, so no 13-bit structures are allowed, they will get automatically bumped up to 16-bits with the last 3 bits having no easy human-readable alias.**
+	* **The only stipulation is that currently, all structures created must be a multiple of whole bytes, so no 13-bit structures are allowed, they will get automatically bumped up to 16-bits (2-bytes) with the last 3 bits having no easy human-readable alias.**
 
 	* **ALSO during prototyping, I expect the last segment to be the LSB of your structure, and if it isn't, the library will fail to properly detect the actual byte length you require.**
 
@@ -36,7 +36,7 @@ data to check if the data is semantically correct instead of manually counting
 			instance = alias(b'\xa0' * 6)
 			# Substitute binary data you have read from a .dat for instance
 
-	And then BOOM, you have a 6-byte structure that you can easily index the first 6 bits (two different ways), next 6 bits, the 3rd byte, and final 4 bytes (which starts at the third byte) of that structure.  I go over that in the next section.
+	And then BOOM, you have a 6-byte structure that you can easily index the first 6 bits (two different ways), next 6 bits, a field that crosses the 1st and 2nd byte, the 3rd byte, and final 4 bytes (which starts at the third byte) of that structure.  I go over that in the next section.
 
 * ### Painless and Intelligent Get and Set Methods
 	The worst part about working with data on the binary level is the constant fear of making an off-by-one error or messing up and assigning a value that is too large for the field, but instead of catching the error and complaining, the field just silently truncates the input data and carries along.  To address this, I have created a set of flexible and intelligent methods to aid the developer in whatever binary-level task they are carrying out.
