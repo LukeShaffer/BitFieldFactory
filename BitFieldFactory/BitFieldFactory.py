@@ -15,6 +15,17 @@ def chunks(lst, n):
     for i in range(0, len(lst), n):
         yield lst[i:i + n]
 
+def twos_comp(int_val, num_bits):
+    '''
+    Compute the twos compliment of an integer with the given bit width
+    Returns an integer value
+    '''
+    # If the most significant bit is set, flip the bits
+    if (int_val & (1 << (num_bits - 1))) != 0:
+        int_val = int_val - (1 << num_bits)
+    return val
+
+
 
 class BitField():
     '''
@@ -138,11 +149,17 @@ class Segment():
     24-32 will mean different things based on what kind of data the miniheader
     is describing), the start_bit will need to be specified for each segment in
     the interest of keeping things simple.
+    
+    As of this latest update, we will now be supporting signed segments.  These
+    will function completely identically to regular segments (which were
+    initially coded as only unsigned) with the appropriate data checks and
+    display.
     '''
-    def __init__(self,  name='', start_bit=-1, bit_length=-1, help=''):
+    def __init__(self,  name='', start_bit=-1, bit_length=-1, is_signed=False, help=''):
         self.name = name
         self.start_bit = start_bit
         self.bit_length = bit_length
+        self.is_signed = is_signed
         self.help = help
 
     @property
@@ -159,7 +176,18 @@ class Segment():
 
     @property
     def max_value(self):
-        return int('1' * self.bit_length, 2)
+        if not self.is_signed:
+            return int('1' * self.bit_length, 2)
+        else:
+            return int('1' * (self.bit_length - 1), 2)
+
+    @property
+    def min_value(self):
+        if not self.is_signed:
+            return 0
+        else:
+            return 1 << (self.bit_length - 1)
+    
 
 
 def segment_funcs(segment):
@@ -195,6 +223,8 @@ def segment_funcs(segment):
                 current_byte += 1
             # print('\tcurrent acuumulation: ', to_return)
         # print('getter ending, returning: ', hex(to_return))
+        # New step, optionally interpret as a twos compliment number
+
         return to_return
 
     def setter(self, value):

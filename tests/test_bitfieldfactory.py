@@ -3,13 +3,16 @@ import os
 
 import BitFieldFactory as bff
 
-
+'''
+General tests on the initial conception of bff, by default assumes all fields
+are unsigned.
+'''
 
 cross_byte_rules = ('test_name', [
-    bff.Segment('first_6', 0, 6, 'first_6 help string'),
-    bff.Segment('cross', 6, 6, 'helpful string'),
+    bff.Segment(name='first_6', start_bit=0, bit_length=6, help='first_6 help string'),
+    bff.Segment(name='cross', start_bit=6, bit_length=6, help='helpful string'),
     # Remaining nibble (4 LS bits) of second byte unaccessible/unused
-    bff.Segment('long', 16, 32, 'this crosses multiple bytes')
+    bff.Segment(name='long', start_bit=16, bit_length=32, help='this crosses multiple bytes')
 	]
 )
 
